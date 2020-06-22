@@ -7,17 +7,19 @@
  
 Categories :
 
- E-commerce .
- 
- Real estate.
- 
- Scraping Images.
- 
- Scraping PDF files.
- 
- Scraping Tables.
- 
- Scraping APIs .
- 
- Automating Download Sequence.
- 
+   E-commerce .
+
+   Real estate.
+
+   Scraping Images.
+
+   Scraping PDF files.
+
+   Scraping Tables.
+
+   Scraping APIs .
+
+   Specific websites.
+
+   Automating Download Sequence.
+

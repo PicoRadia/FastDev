@@ -18,6 +18,6 @@ Categories :
 
 * Scraping APIs .
 
-* Specific websites.
+* Specific URL.
 
 * Automating Download Sequence.

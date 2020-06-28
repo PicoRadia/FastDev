@@ -28,5 +28,5 @@ $('head').append('<a download="ok.json">');
 $('a[download="ok.json"]').attr('href', window.URL.createObjectURL(
      new Blob([JSON.stringify(properties, null, 2)], {type: 'text'})
    )
- )
+ );
 $('a[download="ok.json"]')[0].click()

@@ -31,4 +31,4 @@ btn_link.setAttribute("href",window.URL.createObjectURL(new Blob(results,{type :
 
 // add event Listener
 var btn = document.querySelector("#my-button");
-document.addEventListener("click",()=>btn_link.click())
+btn.addEventListener("click",()=>btn_link.click())

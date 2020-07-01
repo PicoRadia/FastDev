@@ -1,8 +1,8 @@
 <h2> A repo containing source code for all the projects in my portfolio http://fastdev.org</h2>
 
-Language : Python.
+Language : Python and javaScript/jQuery.
 
-Libraries : Mainly Scrapy for scraping and Selenium for web automation .
+Libraries : For Python Mainly Scrapy for scraping and Selenium for web automation .
 
 Categories :
 

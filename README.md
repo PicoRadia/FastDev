@@ -21,3 +21,5 @@ Categories :
 * Specific URL.
 
 * Automating Download Sequence.
+
+* Social Media (Instagram , Facebook ,Linkedin ,Twitter ...)

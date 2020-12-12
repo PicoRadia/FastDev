@@ -1,0 +1,102 @@
+import pandas as pd
+
+# 2 API calls
+
+# 1st API call
+#a = str("X02-41160") # version code
+a = str("K02-26610")
+b = str(28884) # model code
+
+
+
+def get_param(a,b) :
+    x = a
+    y = b
+    url = "https://graphql.nissanusa.com/graphql"
+
+    payload = '{\"operationName\":\"getDetailedVersion\",\"variables\":{\"market\":{\"lang\":\"en\",\"region\":\"us\",\"brand\":\"nissan\",\"application\":\"paymentEstimator\"},\"versionQuery\":{\"modelAndVersion\":{\"versionCode\":\"'+x+'\",\"modelCode\":\"'+y+'\"}}},\"query\":\"query getDetailedVersion($market:Market!,$versionQuery:DetailedVersionInput!){getDetailedVersion(market:$market,versionQuery:$versionQuery){id nstConfigCode versionCode modelCode gradeCode eimCode modelName versionName year gradeName displayName slug priceList{retail{value __typename}otr{value __typename}__typename}keyFeatures defaultExteriorColour{mackevisionKey __typename}defaultInteriorColour{mackevisionKey __typename}__typename}}\"}'
+    
+    headers = {
+    'cache-control': "no-cache",
+    'postman-token': "4cc2338f-1c43-5ee4-afef-23b0096dd65d"
+    }
+    response = requests.request("POST", url, data=payload, headers=headers)
+    rep2 = response.json()
+    name = rep2['data']['getDetailedVersion']['modelName']
+    trim = rep2['data']['getDetailedVersion']['displayName']
+
+
+    x = rep2['data']['getDetailedVersion']['versionCode']
+    y = int(rep2['data']['getDetailedVersion']['priceList']['retail']['value']) # price
+    l=[]
+    l.append(x)
+    l.append(y)
+    l.append(name)
+    l.append(trim)
+    l.append("$" + str(int(y)))
+    l.append('$0')
+    
+    
+    return l
+
+l = get_param(a,b)
+x = str(l[0])
+y = str(l[1])
+
+def get_data(x,y):
+    url = "https://graphql.nissanusa.com/graphql"
+    payload = '\n{\n    \"operationName\": \"getPaymentOptions\",\n    \"variables\": {\n        \"market\": {\n            \"lang\": \"en\",\n            \"region\": \"us\",\n            \"brand\": \"nissan\",\n            \"application\": \"paymentEstimator\"\n        },\n        \"paymentInput\": {\n            \"versionCode\": \"'+x+'\",\n            \"zipCode\": \"90011\",\n            \"downPayment\": 0,\n            \"tradeInValue\": 0,\n            \"creditRating\": \"EXCELLENT\",\n            \"price\": '+y+'\n        },\n        \"testCase\": null\n    },\n    \"query\": \"query getPaymentOptions($market:Market!,$paymentInput:PaymentOptionsInput!,$testCase:PETestScenarioEnum){getPaymentOptions(market:$market,paymentInput:$paymentInput,testCase:$testCase){lease{mileage terms{term paymentOptions{monthlyPayment  price offer{id title{headline strapline __typename}description cashback disclaimers{id description __typename}minimumCreditRating __typename}title titleSummary __typename}__typename}__typename}}}\"\n}\n'
+
+    headers = {
+    'cache-control': "no-cache",
+    'postman-token': "4cc2338f-1c43-5ee4-afef-23b0096dd65d"
+    }
+
+    response = requests.request("POST", url, data=payload, headers=headers)
+
+    rep=response.json()
+    
+    khi12 = rep["data"]["getPaymentOptions"]["lease"][1]["terms"]
+
+    m1224 = khi12[0]["paymentOptions"][0]['monthlyPayment']
+
+
+    m1236 = khi12[1]["paymentOptions"][0]['monthlyPayment']
+
+    m1248 = khi12[4]["paymentOptions"][0]['monthlyPayment']
+    l.append("$" + str(int(m1224)))
+    l.append("$" + str(int(m1236)))
+    l.append("$" + str(int(m1248)))
+    
+
+    khi15 = rep["data"]["getPaymentOptions"]["lease"][0]["terms"]
+
+    m1524 = khi15[0]["paymentOptions"][0]['monthlyPayment']
+    m1536 = khi15[1]["paymentOptions"][0]['monthlyPayment']
+    m1548 = khi15[4]["paymentOptions"][0]['monthlyPayment']
+    l.append("$" + str(int(m1524)))
+    l.append("$" + str(int(m1536)))
+    l.append("$" + str(int(m1548)))
+ 
+
+
+# 2 nd API call
+
+get_data(x,y)
+
+    
+a = list(l[2:])
+
+
+my_df = pd.DataFrame(a)
+my_df = my_df.T
+print(my_df)
+my_df.to_csv('my_csv.csv', index=False, header=False)
+
+with open('my_csv.csv', 'r') as f:
+    cont = f.readline()
+
+
+with open('//home/fastdev/Bureau/ok.csv', 'a') as g:
+    g.writelines(cont)
+
